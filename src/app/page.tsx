@@ -1,91 +1,70 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+"use client";
 
-const inter = Inter({ subsets: ['latin'] })
-
+import Image from "next/image";
+import { Inter } from "next/font/google";
+import styles from "./page.module.css";
+import ContactSection from "./components/contact/contactSection";
+import Projects from "./components/projects/projectSection";
+import { useEffect, useState } from "react";
 export default function Home() {
+  const date = new Date().getFullYear();
+  console.log(date, "date");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Set initial theme based on user's preferred color scheme
+    setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
+
+  useEffect(() => {
+    // Update theme when isDarkMode changes
+    const theme = isDarkMode ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [isDarkMode]);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <h1>Javaria Brascom</h1>
+        <p>Full Stack Developer</p>
+        <section className={styles.section}>
+          <h2>Toggle Theme</h2>
+          <button onClick={toggleTheme}>
+            {isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme"}
+          </button>
+        </section>
+      </header>
+
+      <section className={styles.section}>
+        <h2>About Me</h2>
         <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
+          Full Stack developer with a passion for utilizing JavaScript and React
+          to build accessible and impactful code. With their background in
+          helping local companies launch and professionally as a Quality and
+          Service engineer, they are well adapted to balancing company deadlines
+          as well as customer needs! Very curious and competitive by nature,
+          they can be found learning new topics or playing sports outside of
+          coding.
         </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+      </section>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
+      <section className={styles.section}>
+        <Projects />
+        {/* Your project items go here */}
+      </section>
 
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      <section className={styles.section}>
+        <ContactSection />
+        {/* Your contact information goes here */}
+      </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <footer className={styles.footer}>
+        <p>&copy; {date} Javaria Brascom</p>
+      </footer>
+    </div>
+  );
 }
